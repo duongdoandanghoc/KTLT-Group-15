@@ -33,7 +33,7 @@ void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
     scanf("%ld", &t.p_number);
     printf("\nEmail:\t");
     scanf("%s", t.email_id);
-    fputs("So ghe da co: ", det);
+    fputs("So ghe dat: ", det);
     for (int i = 0; i < n; i++) {
         fprintf(det, "%d", a[i]);
         fputs(", ", det);
@@ -106,7 +106,7 @@ void admin() {
                 i++;
             }
             fclose(movdet);
-            L6: printf("\nNhap so phim cho chi tiet nguoi dung : ");
+            L6: printf("\nNhap phim can xem chi tiet thong tin : ");
             scanf("%d", &choice);
             if (choice == 1) {
                 d1 = fopen("tt1.txt", "r+");
@@ -436,7 +436,7 @@ int main() {
     scanf("%d", &choice);
     Sleep(100);
     printf("----------");
-    Sleep(1000);
+    Sleep(800);
     system("cls");
 
     if (choice == 1) {
