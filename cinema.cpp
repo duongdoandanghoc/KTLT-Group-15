@@ -1,7 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include <windows.h>  // For Beep function
 
 char movie[20];
+float total = 100.0;  // Example values for the receipt
+int discount = 10;
+float payable = 90.0;
+float free_gift = 5.0;
 
 struct ticket {
     char name[20];
@@ -131,7 +137,65 @@ void admin() {
         goto L8;
 }
 
-void process_payment(float total_amount) {
+void viewReceipt(float sum, float tax, float total_amount) {
+    char choice1[2];
+
+    printf("\n\n\n\n\n\t\t\t\t\t\n");
+
+    do {
+        printf("\t        1. View Receipt \n");
+        printf("\t        2. Exit \n");
+        printf("\t        Your choice : ");
+        scanf("%s", choice1);
+
+        if (strcmp(choice1, "1") == 0) {
+            printf("receipt\n");
+            
+
+            printf("\n\n\n\n\n\n\n\t\t           ====================\n");
+            printf("\t\t           |      RECEIPT     |\n");
+            printf("\t\t           ====================\n");
+            printf("\t      ___________________________________________________\n");
+            printf("\t      |                                                 |\n");
+            printf("\t                           HOA DON                      \n");
+            printf("\t      |                   DQA CINEMA                    |\n");
+            printf("\t                          GIO MO CUA:                  \n");
+            printf("\t      |            MOI NGAY : 10 a.m. - 1 a.m.          |\n");
+            printf("\t         _____________________________________________   \n");
+            printf("\t      |                                                 |\n");
+            printf("\t            Total Price.......................%.2fVND\n", sum);
+            printf("\t      |                                                 |\n");
+            printf("\t            TAX (10).........................%.0fVND\n", tax);
+            printf("\t      |                                                 |\n");
+            printf("\t            Payable After Discount............%.2fVND\n", payable);
+            printf("\t      |                                                 |\n");
+            printf("\t            Discount..........................%d %%\n", discount);
+            printf("\t      |                                                 |\n");
+            printf("\t            Final Total.......................%.2fVND\n", total_amount);
+            printf("\t      |                                                 | \n");
+            printf("\t         _____________________________________________    \n");
+            printf("\t      |                                                 | \n");
+            printf("\t                                                          \n");
+            printf("\t      |                                                 | \n");
+            printf("\t               Thank you and please come again.           \n");
+            printf("\t      | The best services and food are waiting for you. | \n");
+            printf("\t                      Enjoy your meal!                 \n");
+            printf("\t      |                                                 | \n");
+            printf("\t                                                          \n");
+            printf("\t      |_________________________________________________|\n");
+
+        } else if (strcmp(choice1, "2") == 0) {
+            // Exit the function
+            return;
+        } else {
+            printf("\n\t        Invalid Input.\n");
+            Beep(300, 500);
+            printf("\t        Choose from (1 or 2): \n\n");
+        }
+    } while (strcmp(choice1, "1") != 0 && strcmp(choice1, "2") != 0);
+}
+
+void process_payment(float total_amount, float sum, float tax) {
     int payment_choice;
     printf("\nTong thanh toan: %.0f VND", total_amount);
     printf("\nChon phuong thuc thanh toan:");
@@ -156,6 +220,10 @@ void process_payment(float total_amount) {
         printf("\nLua chon khong hop le!\n");
     }
     printf("\nCHUC BAN CO MOT NGAY TOT LANH!!!\n\n\n");
+    Sleep(2000);
+    system("cls");
+    printf("\nCHUC MUNG BAN DA THANH TOAN THANH CONG\n");
+    viewReceipt(sum, tax, total_amount);
 }
 
 void book(FILE *poi, FILE *ghe) {
@@ -200,16 +268,18 @@ void book(FILE *poi, FILE *ghe) {
     printf("\nGhe [61 - 80]---> 100 000 VND--->Dac biet");
     L3: printf("\n\nNhap so luong ghe : ");
     scanf("%d", &no);
+    Sleep(100);
+    printf("----------");
     if (no > (80 - i)) {
         printf("\nCon nhieu ghe khong co san\n");
         goto L3;
     }
-    printf("\nVui long chon ghe: ");
+    printf("\nVui long chon vi tri ghe: ");
     for (int i = 0; i < no; i++) {
         L7: printf("\nGhe so:");
         scanf("%d", &tick[i]);
         if (tick[i] > 80) {
-            printf("Oi hong!! Loi dau vao. Thu lai");
+            printf("Loi dau vao. Thu lai");
             goto L7;
         } else {
             for (int k = 0; k < 80; k++) {
@@ -247,17 +317,11 @@ void book(FILE *poi, FILE *ghe) {
         printf("%d, ", tick[r]);
     printf("\nGia ve: %.0f VND", sum);
     tax = (sum * 10) / 100;
-    printf("\nThue: %.0f VND", tax);
+    printf("\nThue  : %.0f VND", tax);
     float total_amount = sum + tax;
-    char total_amount_s[100];
-    sprintf(total_amount_s,"%.0f",total_amount);
-    for (int i=strlen(total_amount_s)-1;i>=strlen(total_amount_s)-4;i--){
-        total_amount_s[strlen(total_amount_s)+1]=total_amount_s[strlen(total_amount_s)];
-    }
-    total_amount_s[strlen(total_amount_s)-3]='.';
-    total_amount_s[strlen(total_amount_s)]='0';
-    printf("\nTong thanh toan: %s VND", total_amount_s);
-    process_payment(total_amount);
+    printf("\nTong thanh toan: %.0f VND", total_amount);
+    
+    process_payment(total_amount, sum, tax);
 
     fclose(poi);
 }
@@ -277,6 +341,11 @@ int main() {
     printf("2]-----> Admin\n");
     printf("3]-----> Thoat\n");
     scanf("%d", &choice);
+    Sleep(100);
+    printf("----------");
+    Sleep(1000);
+    system("cls");
+
     if (choice == 1) {
         Md = fopen("Movie_details.txt", "a+");
         int i = 0;
@@ -288,6 +357,11 @@ int main() {
         fclose(Md);
         L2: printf("\nNHAP PHIM BAN CHON\n");
         scanf("%d", &ch);
+        Sleep(100);
+        printf("----------");
+        Sleep(1000);
+        system("cls");
+
         if (ch == 1) {
             d1 = fopen("tt1.txt", "a+");
             s1 = fopen("ghe1.txt", "a+");
