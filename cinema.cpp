@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>  // For Beep function
+#include <windows.h>  // Để sử dụng hàm Beep
 
 char movie[20];
-float total = 100.0;  // Example values for the receipt
+float total = 100.0;  // Giá trị ví dụ cho biên lai
 int discount = 10;
 float payable = 90.0;
 float free_gift = 5.0;
@@ -15,6 +15,7 @@ struct ticket {
     long int p_number;
 };
 
+// Hàm nhận thông tin chi tiết từ người dùng
 void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
     printf("\nVUI LONG DIEN DAY DU THONG TIN DUOI DAY");
     printf("\nHo va ten:\t");
@@ -43,21 +44,26 @@ void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
     fclose(det);
 }
 
+// Hàm quản trị
 void admin() {
     char admin_id[20], det[25];
     char admin_pass[10], time[10];
     int choice;
     FILE *movdet, *d1, *d2, *d3, *d4, *d5;
     char num[5], ch;
+    
+    // Đăng nhập quản trị viên
     L4: printf("Admin id:\t");
     scanf("%s", admin_id);
     printf("Admin password:\t");
     scanf("%s", admin_pass);
+    
     if (strcmp(admin_id, "admin") == 0 && strcmp(admin_pass, "admin") == 0) {
         L8: printf("\n1]----->Thay doi ten va thoi gian phim");
         printf("\n2]----->Lay thong tin chi tiet chuong trinh");
         L5: printf("\nNhap lua chon : ");
         scanf("%d", &choice);
+        
         if (choice == 1) {
             movdet = fopen("Movie_details.txt", "w+");
             for (int i = 0; i < 2; i++) {
@@ -137,6 +143,7 @@ void admin() {
         goto L8;
 }
 
+// Hàm xem hóa đơn
 void viewReceipt(float sum, float tax, float total_amount) {
     char choice1[2];
 
@@ -150,7 +157,6 @@ void viewReceipt(float sum, float tax, float total_amount) {
 
         if (strcmp(choice1, "1") == 0) {
             printf("receipt\n");
-            
 
             printf("\n\n\n\n\n\n\n\t\t           ====================\n");
             printf("\t\t           |      RECEIPT     |\n");
@@ -185,7 +191,7 @@ void viewReceipt(float sum, float tax, float total_amount) {
             printf("\t      |_________________________________________________|\n");
 
         } else if (strcmp(choice1, "2") == 0) {
-            // Exit the function
+            // Thoát khỏi hàm
             return;
         } else {
             printf("\n\t        Invalid Input.\n");
@@ -195,6 +201,7 @@ void viewReceipt(float sum, float tax, float total_amount) {
     } while (strcmp(choice1, "1") != 0 && strcmp(choice1, "2") != 0);
 }
 
+// Hàm xử lý thanh toán
 void process_payment(float total_amount, float sum, float tax) {
     int payment_choice;
     printf("\nTong thanh toan: %.0f VND", total_amount);
@@ -226,6 +233,7 @@ void process_payment(float total_amount, float sum, float tax) {
     viewReceipt(sum, tax, total_amount);
 }
 
+// Hàm đặt vé
 void book(FILE *poi, FILE *ghe) {
     int a = 0, tick[80], no = 0, occupied;
     struct ticket t1;
@@ -326,6 +334,7 @@ void book(FILE *poi, FILE *ghe) {
     fclose(poi);
 }
 
+// Hàm chính
 int main() {
     FILE *Md, *d1, *d2, *d3, *d4, *d5, *s1, *s2, *s3, *s4, *s5;
     int choice;
