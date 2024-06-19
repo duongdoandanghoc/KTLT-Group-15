@@ -1,5 +1,5 @@
 # KTLT-Group-25
-This is a big homework project in KTLT of group 15
+This is a big project in KTLT of group 15
 
 
 
