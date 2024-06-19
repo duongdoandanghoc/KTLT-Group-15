@@ -1,199 +1,195 @@
-#include<stdio.h>
-#include<string.h>
+#include <stdio.h>
+#include <string.h>
+
 char movie[20];
-struct ticket
-{
+
+struct ticket {
     char name[20];
     char email_id[45];
     long int p_number;
 };
-void Detail_reciver(struct ticket t,int a[],int n,FILE *det)
-{
-    //int l,r;
+
+void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
     printf("\nVUI LONG DIEN DAY DU THONG TIN DUOI DAY");
     printf("\nHo va ten:\t");
-    scanf("%s",t.name);
+    scanf("%s", t.name);
     printf("\nSo dien thoai:\t");
-    scanf("%ld",&t.p_number);
+    scanf("%ld", &t.p_number);
     printf("\nEmail:\t");
-    scanf("%s",t.email_id);
-    fputs("So ghe da co: ",det);
-    for(int i=0;i<n;i++)
-    {
-        fprintf(det,"%d",a[i]);
-        fputs(", ",det);
+    scanf("%s", t.email_id);
+    fputs("So ghe da co: ", det);
+    for (int i = 0; i < n; i++) {
+        fprintf(det, "%d", a[i]);
+        fputs(", ", det);
     }
-    fputs("\n",det);
+    fputs("\n", det);
 
-    fputs(t.name,det);
-    fputs("\n",det);
+    fputs(t.name, det);
+    fputs("\n", det);
 
-    fputs(t.email_id,det);
-    fputs("\n",det);
+    fputs(t.email_id, det);
+    fputs("\n", det);
 
-    fprintf(det,"%ld",t.p_number);
-    fputs("\n",det);
-    fputs("\n",det);
+    fprintf(det, "%ld", t.p_number);
+    fputs("\n", det);
+    fputs("\n", det);
 
     fclose(det);
 }
-void admin()
-{
-    char admin_id[20],det[25];
-    char admin_pass[10],time[10];
-    int choice; //,size    
-    FILE *movdet,*d1,*d2,*d3,*d4,*d5;
-    char num[5],ch;
-    L4:printf("Admin id:\t");
-    scanf("%s",admin_id);
+
+void admin() {
+    char admin_id[20], det[25];
+    char admin_pass[10], time[10];
+    int choice;
+    FILE *movdet, *d1, *d2, *d3, *d4, *d5;
+    char num[5], ch;
+    L4: printf("Admin id:\t");
+    scanf("%s", admin_id);
     printf("Admin password:\t");
-    scanf("%s",admin_pass);
-    if(strcmp(admin_id,"admin")==0 && strcmp(admin_pass,"admin")==0)
-    {
-        L8 :printf("\n1]----->Thay doi ten va thoi gian phim");
+    scanf("%s", admin_pass);
+    if (strcmp(admin_id, "admin") == 0 && strcmp(admin_pass, "admin") == 0) {
+        L8: printf("\n1]----->Thay doi ten va thoi gian phim");
         printf("\n2]----->Lay thong tin chi tiet chuong trinh");
-        L5:printf("\nNhap lua chon : ");
-        scanf("%d",&choice);
-        if(choice==1)
-        {
-            movdet=fopen("Movie_details.txt","w+");
-            for(int i=0;i<2;i++)
-            {
-               num[0]=(i+1)+'0';
-               printf("Nhap ten phim:\t");
-               scanf("%s",movie);
-               printf("Nhap thoi gian chieu:\t");
-               scanf("%s",time);
-               if(strlen(movie)>0 && strlen(time)>0)
-               {
-                 fputs(num,movdet);
-                 fputs("] ",movdet);
-                 fputs(movie,movdet);
-                 fputs("\t",movdet);
-                 fputs(time,movdet);
-                 fputs("\n",movdet);
-               }
+        L5: printf("\nNhap lua chon : ");
+        scanf("%d", &choice);
+        if (choice == 1) {
+            movdet = fopen("Movie_details.txt", "w+");
+            for (int i = 0; i < 2; i++) {
+                num[0] = (i + 1) + '0';
+                printf("Nhap ten phim:\t");
+                scanf("%s", movie);
+                printf("Nhap thoi gian chieu:\t");
+                scanf("%s", time);
+                if (strlen(movie) > 0 && strlen(time) > 0) {
+                    fputs(num, movdet);
+                    fputs("] ", movdet);
+                    fputs(movie, movdet);
+                    fputs("\t", movdet);
+                    fputs(time, movdet);
+                    fputs("\n", movdet);
+                }
             }
             printf("Luu thanh cong!!!\n\n");
-        }
-        else if(choice==2)
-        {
-            movdet=fopen("Movie_details.txt","a+");
-            int i=0;
-            while(i<5)
-            {
-                fgets(det,100,movdet);
-                printf("%s",det);
+            fclose(movdet);
+        } else if (choice == 2) {
+            movdet = fopen("Movie_details.txt", "a+");
+            int i = 0;
+            while (i < 5) {
+                fgets(det, 100, movdet);
+                printf("%s", det);
                 i++;
             }
-            L6:printf("Nhap so phim cho chi tiet nguoi dung : ");
-            scanf("%d",&choice);
-            if(choice==1)
-            {
-                d1=fopen("tt1.txt","r+");
-                while((ch=fgetc(d1))!= EOF)
-                    printf("%c",ch);
+            fclose(movdet);
+            L6: printf("\nNhap so phim cho chi tiet nguoi dung : ");
+            scanf("%d", &choice);
+            if (choice == 1) {
+                d1 = fopen("tt1.txt", "r+");
+                while ((ch = fgetc(d1)) != EOF)
+                    printf("%c", ch);
                 printf("\n\n\n");
                 fclose(d1);
-            }
-            else if(choice==2)
-            {
-                d2=fopen("tt2.txt","r+");
-                while((ch=fgetc(d2))!=EOF)
-                printf("%c",ch);
+
+            } else if (choice == 2) {
+                d2 = fopen("tt2.txt", "r+");
+                while ((ch = fgetc(d2)) != EOF)
+                    printf("%c", ch);
                 printf("\n\n\n");
                 fclose(d2);
-            }
-            else if(choice==3)
-            {
-                d3=fopen("tt3.txt","r+");
-                while((ch=fgetc(d3))!=EOF)
-                printf("%c",ch);
+            } else if (choice == 3) {
+                d3 = fopen("tt3.txt", "r+");
+                while ((ch = fgetc(d3)) != EOF)
+                    printf("%c", ch);
                 printf("\n\n\n");
                 fclose(d3);
-            }
-            else if(choice==4)
-            {
-                d4=fopen("tt3.txt","r+");
-                while((ch=fgetc(d4))!=EOF)
-                printf("%c",ch);
+            } else if (choice == 4) {
+                d4 = fopen("tt4.txt", "r+");
+                while ((ch = fgetc(d4)) != EOF)
+                    printf("%c", ch);
                 printf("\n\n\n");
                 fclose(d4);
-            }
-            else if(choice==5)
-            {
-                d5=fopen("tt3.txt","r+");
-                while((ch=fgetc(d5))!=EOF)
-                printf("%c",ch);
+            } else if (choice == 5) {
+                d5 = fopen("tt5.txt", "r+");
+                while ((ch = fgetc(d5)) != EOF)
+                    printf("%c", ch);
                 printf("\n\n\n");
                 fclose(d5);
-            }
-            else
-            {
+            } else {
                 printf("\nDau vao nhap sai\n");
                 goto L6;
             }
-        }
-        else
-        {
+        } else {
             printf("Lua chon sai!!! Thu lai.");
             goto L5;
         }
-    }
-    else
-    {
+    } else {
         printf("\nTai khoan hoac mat khau khong chinh xac!\n");
         goto L4;
     }
-    fclose(movdet);
     printf("\n\n----->1] Tiep tuc voi admin\n----->An nut bat ki de thoat\n\n");
-    scanf("%d",&choice);
-    if(choice==1)
+    scanf("%d", &choice);
+    if (choice == 1)
         goto L8;
-
 }
 
-void book(FILE *poi,FILE *ghe)
-{
-    int a=0,tick[80],no=0,occupied;
+void process_payment(float total_amount) {
+    int payment_choice;
+    printf("\nTong thanh toan: %.0f VND", total_amount);
+    printf("\nChon phuong thuc thanh toan:");
+    printf("\n1] QR code");
+    printf("\n2] So tai khoan ngan hang");
+    printf("\nLua chon: ");
+    scanf("%d", &payment_choice);
+
+    if (payment_choice == 1) {
+        printf("\nVui long quet ma QR sau de thanh toan:\n");
+        printf(" ________ \n");
+        printf("|        |\n");
+        printf("|  QR    |\n");
+        printf("|  CODE  |\n");
+        printf("|________|\n");
+    } else if (payment_choice == 2) {
+        printf("\nVui long chuyen khoan den so tai khoan sau:\n");
+        printf("So tai khoan: 08322229936688\n");
+        printf("Ten chu tai khoan: DOAN MINH DUONG\n");
+        printf("Ngan hang: MB BANK\n");
+    } else {
+        printf("\nLua chon khong hop le!\n");
+    }
+    printf("\nCHUC BAN CO MOT NGAY TOT LANH!!!\n\n\n");
+}
+
+void book(FILE *poi, FILE *ghe) {
+    int a = 0, tick[80], no = 0, occupied;
     struct ticket t1;
     printf("\t\t\t\t\tMAN HINH\n\n");
 
-    int occ[80]={0},i=0;
-    while((occupied=getw(ghe)) != EOF)
-    {
-        occ[i]=occupied;
+    int occ[80] = {0}, i = 0;
+    while ((occupied = getw(ghe)) != EOF) {
+        occ[i] = occupied;
         i++;
     }
-    for(int j=0;j<8;j++)
-    {
+    for (int j = 0; j < 8; j++) {
         printf("\t");
-        for(int k=0;k<10;k++)
-        {
-            int flag=0;
+        for (int k = 0; k < 10; k++) {
+            int flag = 0;
             a++;
-            for(int r=0;r<80;r++)
-            {
-                if(occ[r]==a)
-                {
-                    if(a<10)
-                        printf("0%d-H\t",a);
+            for (int r = 0; r < 80; r++) {
+                if (occ[r] == a) {
+                    if (a < 10)
+                        printf("0%d-H\t", a);
                     else
-                        printf("%d-H\t",a);
-                    flag=0;
+                        printf("%d-H\t", a);
+                    flag = 0;
                     break;
-                }
-                else
-                    flag=1;
+                } else
+                    flag = 1;
             }
 
-
-            if(flag==1)
-            {
-              if(a<10)
-                printf("0%d-S\t",a);
-              else
-                printf("%d-S\t",a);
+            if (flag == 1) {
+                if (a < 10)
+                    printf("0%d-S\t", a);
+                else
+                    printf("%d-S\t", a);
             }
         }
         printf("\n");
@@ -202,77 +198,68 @@ void book(FILE *poi,FILE *ghe)
     printf("\nGhe [01 - 20]---> 60 000 VND--->Tiet kiem");
     printf("\nGhe [21 - 60]---> 80 000 VND--->Cao cap");
     printf("\nGhe [61 - 80]---> 100 000 VND--->Dac biet");
-    L3:printf("\n\nNhap so luong ghe : ");
-    scanf("%d",&no);
-    if(no>(80-i))
-    {
+    L3: printf("\n\nNhap so luong ghe : ");
+    scanf("%d", &no);
+    if (no > (80 - i)) {
         printf("\nCon nhieu ghe khong co san\n");
         goto L3;
     }
-    printf("\nVui long chon ghe ");
-    for(int i=0;i<no;i++)
-    {
-        L7:printf("\nGhe so:");
-        scanf("%d",&tick[i]);
-        if(tick[i]>80)
-        {
+    printf("\nVui long chon ghe: ");
+    for (int i = 0; i < no; i++) {
+        L7: printf("\nGhe so:");
+        scanf("%d", &tick[i]);
+        if (tick[i] > 80) {
             printf("Oi hong!! Loi dau vao. Thu lai");
             goto L7;
-        }
-        else
-        {
-            for(int k=0;k<80;k++)
-            {
-                if(occ[k]==tick[i])
-                {
+        } else {
+            for (int k = 0; k < 80; k++) {
+                if (occ[k] == tick[i]) {
                     printf("=((!! Ghe da duoc dat truoc. Vui long chon ghe khac");
                     goto L7;
                 }
             }
         }
-        for(int s=0;s<i;s++)
-        {
-            if(tick[s]==tick[i])
-            {
+        for (int s = 0; s < i; s++) {
+            if (tick[s] == tick[i]) {
                 printf("\nDa nhap so ghe\n");
                 goto L7;
             }
         }
-        putw(tick[i],ghe);
+        putw(tick[i], ghe);
     }
     fclose(ghe);
-    a=0;
-    Detail_reciver(t1,tick,no,poi);
-    float sum=0,tax=0;
-    for(int i=0;i<no;i++)
-    {
-        if(tick[i]>0 && tick[i]<=20)
-            sum=sum+60000;
-        else if(tick[i]>=21 && tick[i]<=60)
-            sum=sum+80000;
+    a = 0;
+    Detail_reciver(t1, tick, no, poi);
+    float sum = 0, tax = 0;
+    for (int i = 0; i < no; i++) {
+        if (tick[i] > 0 && tick[i] <= 20)
+            sum = sum + 60000;
+        else if (tick[i] >= 21 && tick[i] <= 60)
+            sum = sum + 80000;
         else
-            sum=sum+100000;
+            sum = sum + 100000;
     }
 
     printf("\nChuc mung ban da dat ghe thanh cong:");
-    printf("\nSo ghe da dat: %d",no);
+    printf("\nSo ghe da dat: %d", no);
     printf("\nCho ngoi da dat:");
-    for(int r=0;r<no;r++)
-    printf("%d, ",tick[r]);
-    printf("\nGia ve: %.0fVND/-",sum);
-    tax=(sum*10)/100;
-    printf("\nThue: %.0fVND/-",tax);
-    printf("\nTong thanh toan: %.0fVND/-",sum+tax);
-    printf("\nCHUC BAN CO MOT NGAY TOT LANH!!!\n\n\n");
+    for (int r = 0; r < no; r++)
+        printf("%d, ", tick[r]);
+    printf("\nGia ve: %.0f VND", sum);
+    tax = (sum * 10) / 100;
+    printf("\nThue: %.0f VND", tax);
+    float total_amount = sum + tax;
+    printf("\nTong thanh toan: %.0f VND", total_amount);
+    
+    process_payment(total_amount);
 
     fclose(poi);
-
 }
-int main()
-{
-    FILE *Md,*d1,*d2,*d3,*d4,*d5,*s1,*s2,*s3,*s4,*s5;
+
+int main() {
+    FILE *Md, *d1, *d2, *d3, *d4, *d5, *s1, *s2, *s3, *s4, *s5;
     int choice;
-    int ch=0;
+    int ch = 0;
     char det[25];
     printf("____________________________________________________________________\n");
     printf("____________________________________________________________________\n");
@@ -280,74 +267,67 @@ int main()
     printf("|                          DAT VE NGAY                             |\n");
     printf("____________________________________________________________________\n");
     printf("____________________________________________________________________\n");
-    l1 : printf("1]-----> Dat ve\n");
+    l1: printf("1]-----> Dat ve\n");
     printf("2]-----> Admin\n");
-    printf("3]----->Thoat\n");
-    scanf("%d",&choice);
-    if(choice==1)
-    {
-        Md=fopen("Movie_details.txt","a+");
-        int i=0;
-        while(i<5)
-        {
-            fgets(det,100,Md);
-            printf("%s",det);
+    printf("3]-----> Thoat\n");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        Md = fopen("Movie_details.txt", "a+");
+        int i = 0;
+        while (i < 5) {
+            fgets(det, 100, Md);
+            printf("%s", det);
             i++;
         }
-        L2:printf("\nNHAP PHIM BAN CHON\n");
-        scanf("%d",&ch);
-        if(ch==1)
-        {
-                d1=fopen("tt1.txt","a+");
-                s1=fopen("ghe1.txt","a+");
-                book(d1,s1);
-                goto l1;
-        }
-        else if(ch==2)
-        {
-                d2=fopen("tt2.txt","a+");
-                s2=fopen("ghe2.txt","a+");
-                book(d2,s2);
-                goto l1;
-        }
-        else if(ch==3)
-        {
-                d3=fopen("tt3.txt","a+");
-                s3=fopen("ghe3.txt","a+");
-                book(d3,s3);
-                goto l1;
-        }
-        else if(ch==4)
-        {
-                d4=fopen("tt4.txt","a+");
-                s4=fopen("ghe4.txt","a+");
-                book(d4,s4);
-                goto l1;
-        }
-        else if(ch==5)
-        {
-                d5=fopen("tt5.txt","a+");
-                s5=fopen("ghe5.txt","a+");
-                book(d5,s5);
-                goto l1;
-        }
-        else
-        {
+        fclose(Md);
+        L2: printf("\nNHAP PHIM BAN CHON\n");
+        scanf("%d", &ch);
+        if (ch == 1) {
+            d1 = fopen("tt1.txt", "a+");
+            s1 = fopen("ghe1.txt", "a+");
+            book(d1, s1);
+            fclose(d1);
+            fclose(s1);
+            goto l1;
+        } else if (ch == 2) {
+            d2 = fopen("tt2.txt", "a+");
+            s2 = fopen("ghe2.txt", "a+");
+            book(d2, s2);
+            fclose(d2);
+            fclose(s2);
+            goto l1;
+        } else if (ch == 3) {
+            d3 = fopen("tt3.txt", "a+");
+            s3 = fopen("ghe3.txt", "a+");
+            book(d3, s3);
+            fclose(d3);
+            fclose(s3);
+            goto l1;
+        } else if (ch == 4) {
+            d4 = fopen("tt4.txt", "a+");
+            s4 = fopen("ghe4.txt", "a+");
+            book(d4, s4);
+            fclose(d4);
+            fclose(s4);
+            goto l1;
+        } else if (ch == 5) {
+            d5 = fopen("tt5.txt", "a+");
+            s5 = fopen("ghe5.txt", "a+");
+            book(d5, s5);
+            fclose(d5);
+            fclose(s5);
+            goto l1;
+        } else {
             printf("\nLua chon khong hop le. Thu lai");
             printf("\n");
             goto L2;
         }
-    }
-    else if(choice==2)
-    {
+    } else if (choice == 2) {
         admin();
         goto l1;
-    }
-    else if(choice==3)
+    } else if (choice == 3) {
         printf("\n\n\nCHUC BAN CO MOT NGAY TOT LANH!!!\n");
-
-    else
-    {
+    } else {
         printf("Lua chon khong hop le. Vui long nhap lai\n");
         goto l1;
     }
