@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>  // For Beep function
+#define MAX_MOVIES 100
+#define MAX_TICKETS 100
+#define MAX_USERS 100
+using namespace std;
 
 char movie[20];
-float total = 100.0;  // Giá trị ví dụ cho hóa đơn
+float total = 100.0;  // Example values for the receipt
 int discount = 10;
 float payable = 90.0;
 float free_gift = 5.0;
@@ -14,8 +18,13 @@ struct ticket {
     char email_id[45];
     long int p_number;
 };
+typedef struct {
+    int id;
+    char title[50];
+    char genre[30];
+    int duration; // in minutes
+} Movie;
 
-// Hàm nhận thông tin chi tiết vé và lưu vào file
 void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
     printf("\nVUI LONG DIEN DAY DU THONG TIN DUOI DAY");
     printf("\nHo va ten:\t");
@@ -43,8 +52,13 @@ void Detail_reciver(struct ticket t, int a[], int n, FILE *det) {
 
     fclose(det);
 }
+void searchMovie() {
+    
+}
+void deleteMovie() {
+    
+}
 
-// Hàm quản lý chức năng của admin
 void admin() {
     char admin_id[20], det[25];
     char admin_pass[10], time[10];
@@ -57,7 +71,10 @@ void admin() {
     scanf("%s", admin_pass);
     if (strcmp(admin_id, "admin") == 0 && strcmp(admin_pass, "admin") == 0) {
         L8: printf("\n1]----->Thay doi ten va thoi gian phim");
-        printf("\n2]----->Lay thong tin chi tiet chuong trinh");
+        printf("\n2]----->Lay thong tin chi tiet phim");
+        printf("\n3]----->Them phim");
+        printf("\n4]----->Chinh sua thong tin phim");
+        printf("\n5]----->Xoa phim");
         L5: printf("\nNhap lua chon : ");
         scanf("%d", &choice);
         if (choice == 1) {
@@ -79,6 +96,7 @@ void admin() {
             }
             printf("Luu thanh cong!!!\n\n");
             fclose(movdet);
+            // addMovie
         } else if (choice == 2) {
             movdet = fopen("Movie_details.txt", "a+");
             int i = 0;
@@ -125,9 +143,82 @@ void admin() {
                 printf("\nDau vao nhap sai\n");
                 goto L6;
             }
-        } else {
-            printf("Lua chon sai!!! Thu lai.");
-            goto L5;
+        }
+        // addMovie
+        else if(choice == 3) {
+            movdet = fopen("Movie_details.txt", "w+");
+            int n;
+            printf("Nhap so luong phim can them:\t");
+            scanf("%d", &n);
+            for (int i = 0; i < n; i++) {
+                num[0] = (i + 1) + '0';
+                printf("Nhap ten phim:\t");
+                scanf("%s", movie);
+                printf("Nhap thoi gian chieu:\t");
+                scanf("%s", time);
+                if (strlen(movie) > 0 && strlen(time) > 0) {
+                    fputs(num, movdet);
+                    fputs("] ", movdet);
+                    fputs(movie, movdet);
+                    fputs("\t", movdet);
+                    fputs(time, movdet);
+                    fputs("\n", movdet);
+                }
+            }
+            printf("Luu thanh cong!!!\n\n");
+            fclose(movdet);
+        }
+        // editMovie
+        else if(choice == 4) {
+            movdet = fopen("Movie_details.txt", "w+");
+            char str[20];
+            printf("Nhap ten phim can sua:\t");
+            scanf("%s", str);
+            fwrite(str, 1, strlen(str), movdet);
+            fclose(movdet); 
+        } // deleteMovie
+         else if(choice == 5) {
+            FILE *file = fopen("Movie_details.txt", "r");
+            char str[20];
+            printf("Nhap ten phim can xoa:\t");
+            scanf("%s", str);
+            // Create a temporary file to write lines that do not contain the string
+            FILE *tempFile = fopen("temp.txt", "w");
+
+            char line[1024];
+            int found = 0;
+
+            while (fgets(line, sizeof(line), file)) {
+                if (strstr(line, str) == NULL) {
+                    fputs(line, tempFile);
+                } else {
+                    found = 1;
+                }
+            }
+
+            fclose(file);
+            fclose(tempFile);
+
+            // Rename the temporary file to the original file name
+            if (remove("Movie_details.txt") != 0) {
+                printf("Khong the xoa file goc\n");
+                return;
+            }
+
+            if (rename("temp.txt", "Movie_details.txt") != 0) {
+                printf("Khong the doi ten file tam thanh file goc\n");
+                return;
+            }
+
+            if (found) {
+                printf("Da xoa phim %s trong file %s\n", str, "Movie_details.txt");
+            } else {
+                printf("Khong tim thay chuoi '%s' trong file %s\n", str, "Movie_details.txt");
+            }
+}
+ else {
+        printf("Lua chon sai!!! Thu lai.");
+        goto L5;
         }
     } else {
         printf("\nTai khoan hoac mat khau khong chinh xac!\n");
@@ -139,7 +230,6 @@ void admin() {
         goto L8;
 }
 
-// Hàm hiển thị hóa đơn sau khi thanh toán
 void viewReceipt(float sum, float tax, float total_amount) {
     char choice1[2];
 
@@ -153,6 +243,7 @@ void viewReceipt(float sum, float tax, float total_amount) {
 
         if (strcmp(choice1, "1") == 0) {
             printf("HOA DON\n");
+            
 
             printf("\n\n\n\n\n\n\n\t\t           ====================\n");
             printf("\t\t           |      HOA DON     |\n");
@@ -187,7 +278,7 @@ void viewReceipt(float sum, float tax, float total_amount) {
             printf("\t      |_________________________________________________|\n");
 
         } else if (strcmp(choice1, "2") == 0) {
-            // Thoát khỏi hàm
+            // Exit the function
             return;
         } else {
             printf("\n\t        Loi dau vao.\n");
@@ -197,7 +288,6 @@ void viewReceipt(float sum, float tax, float total_amount) {
     } while (strcmp(choice1, "1") != 0 && strcmp(choice1, "2") != 0);
 }
 
-// Hàm xử lý thanh toán và hiển thị hóa đơn sau khi thanh toán thành công
 void process_payment(float total_amount, float sum, float tax) {
     int payment_choice;
     printf("\nTong thanh toan: %.0f VND", total_amount);
@@ -229,7 +319,6 @@ void process_payment(float total_amount, float sum, float tax) {
     viewReceipt(sum, tax, total_amount);
 }
 
-// Hàm đặt vé và lưu thông tin vào file
 void book(FILE *poi, FILE *ghe) {
     int a = 0, tick[80], no = 0, occupied;
     struct ticket t1;
@@ -330,7 +419,6 @@ void book(FILE *poi, FILE *ghe) {
     fclose(poi);
 }
 
-// Hàm chính của chương trình
 int main() {
     FILE *Md, *d1, *d2, *d3, *d4, *d5, *s1, *s2, *s3, *s4, *s5;
     int choice;
@@ -417,11 +505,3 @@ int main() {
         goto l1;
     }
 }
-
-
-// Detail_reciver: Chức năng nhận thông tin chi tiết về vé và lưu vào file.
-// admin: Chức năng quản trị viên quản lý phim và truy xuất thông tin chi tiết chương trình.
-// viewReceipt: Chức năng hiển thị biên lai sau khi thanh toán.
-// process_ Payment: Chức năng xử lý thanh toán và gọi viewReceipt sau khi thanh toán thành công.
-// book: Chức năng đặt vé và lưu thông tin vào file.
-// main: Chức năng chính để hiển thị menu và xử lý các lựa chọn của người dùng.
