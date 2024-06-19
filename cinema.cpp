@@ -9,7 +9,7 @@ struct ticket
 };
 void Detail_reciver(struct ticket t,int a[],int n,FILE *det)
 {
-    int l,r;
+    //int l,r;
     printf("\nVUI LONG DIEN DAY DU THONG TIN DUOI DAY");
     printf("\nHo va ten:\t");
     scanf("%s",t.name);
@@ -41,8 +41,8 @@ void admin()
 {
     char admin_id[20],det[25];
     char admin_pass[10],time[10];
-    int choice,size;
-    FILE *movdet,*d1,*d2,*d3;
+    int choice; //,size    
+    FILE *movdet,*d1,*d2,*d3,*d4,*d5;
     char num[5],ch;
     L4:printf("Admin id:\t");
     scanf("%s",admin_id);
@@ -112,6 +112,22 @@ void admin()
                 printf("\n\n\n");
                 fclose(d3);
             }
+            else if(choice==4)
+            {
+                d4=fopen("tt3.txt","r+");
+                while((ch=fgetc(d4))!=EOF)
+                printf("%c",ch);
+                printf("\n\n\n");
+                fclose(d4);
+            }
+            else if(choice==5)
+            {
+                d5=fopen("tt3.txt","r+");
+                while((ch=fgetc(d5))!=EOF)
+                printf("%c",ch);
+                printf("\n\n\n");
+                fclose(d5);
+            }
             else
             {
                 printf("\nDau vao nhap sai\n");
@@ -137,14 +153,14 @@ void admin()
 
 }
 
-void book(FILE *poi,FILE *seat)
+void book(FILE *poi,FILE *ghe)
 {
     int a=0,tick[80],no=0,occupied;
     struct ticket t1;
     printf("\t\t\t\t\tMAN HINH\n\n");
 
     int occ[80]={0},i=0;
-    while((occupied=getw(seat)) != EOF)
+    while((occupied=getw(ghe)) != EOF)
     {
         occ[i]=occupied;
         i++;
@@ -222,30 +238,31 @@ void book(FILE *poi,FILE *seat)
                 goto L7;
             }
         }
-        putw(tick[i],seat);
+        putw(tick[i],ghe);
     }
-    fclose(seat);
+    fclose(ghe);
     a=0;
     Detail_reciver(t1,tick,no,poi);
     float sum=0,tax=0;
     for(int i=0;i<no;i++)
     {
         if(tick[i]>0 && tick[i]<=20)
-            sum=sum+50000;
+            sum=sum+60000;
         else if(tick[i]>=21 && tick[i]<=60)
             sum=sum+80000;
         else
             sum=sum+100000;
     }
+
     printf("\nChuc mung ban da dat ghe thanh cong:");
     printf("\nSo ghe da dat: %d",no);
     printf("\nCho ngoi da dat:");
     for(int r=0;r<no;r++)
     printf("%d, ",tick[r]);
-    printf("\nGia ve: %.2fVND/-",sum);
-    tax=(sum*5)/100;
-    printf("\nThue: %.2fVND/-",tax);
-    printf("\nTong thanh toan: %.2fVND/-",sum+tax);
+    printf("\nGia ve: %.0fVND/-",sum);
+    tax=(sum*10)/100;
+    printf("\nThue: %.0fVND/-",tax);
+    printf("\nTong thanh toan: %.0fVND/-",sum+tax);
     printf("\nCHUC BAN CO MOT NGAY TOT LANH!!!\n\n\n");
 
     fclose(poi);
@@ -253,7 +270,7 @@ void book(FILE *poi,FILE *seat)
 }
 int main()
 {
-    FILE *Md,*d1,*d2,*d3,*s1,*s2,*s3;
+    FILE *Md,*d1,*d2,*d3,*d4,*d5,*s1,*s2,*s3,*s4,*s5;
     int choice;
     int ch=0;
     char det[25];
@@ -298,6 +315,20 @@ int main()
                 d3=fopen("tt3.txt","a+");
                 s3=fopen("ghe3.txt","a+");
                 book(d3,s3);
+                goto l1;
+        }
+        else if(ch==4)
+        {
+                d4=fopen("tt4.txt","a+");
+                s4=fopen("ghe4.txt","a+");
+                book(d4,s4);
+                goto l1;
+        }
+        else if(ch==5)
+        {
+                d5=fopen("tt5.txt","a+");
+                s5=fopen("ghe5.txt","a+");
+                book(d5,s5);
                 goto l1;
         }
         else
