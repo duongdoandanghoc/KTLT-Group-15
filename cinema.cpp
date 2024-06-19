@@ -249,8 +249,14 @@ void book(FILE *poi, FILE *ghe) {
     tax = (sum * 10) / 100;
     printf("\nThue: %.0f VND", tax);
     float total_amount = sum + tax;
-    printf("\nTong thanh toan: %.0f VND", total_amount);
-    
+    char total_amount_s[100];
+    sprintf(total_amount_s,"%.0f",total_amount);
+    for (int i=strlen(total_amount_s)-1;i>=strlen(total_amount_s)-4;i--){
+        total_amount_s[strlen(total_amount_s)+1]=total_amount_s[strlen(total_amount_s)];
+    }
+    total_amount_s[strlen(total_amount_s)-3]='.';
+    total_amount_s[strlen(total_amount_s)]='0';
+    printf("\nTong thanh toan: %s VND", total_amount_s);
     process_payment(total_amount);
 
     fclose(poi);
