@@ -42,7 +42,7 @@ void admin()
     char admin_id[20],det[25];
     char admin_pass[10],time[10];
     int choice,size;
-    FILE *movdet,*d1,*d2;
+    FILE *movdet,*d1,*d2,*d3;
     char num[5],ch;
     L4:printf("Admin id:\t");
     scanf("%s",admin_id);
@@ -80,9 +80,9 @@ void admin()
         {
             movdet=fopen("Movie_details.txt","a+");
             int i=0;
-            while(i<2)
+            while(i<5)
             {
-                fgets(det,25,movdet);
+                fgets(det,100,movdet);
                 printf("%s",det);
                 i++;
             }
@@ -90,7 +90,7 @@ void admin()
             scanf("%d",&choice);
             if(choice==1)
             {
-                d1=fopen("Details1.txt","r+");
+                d1=fopen("tt1.txt","r+");
                 while((ch=fgetc(d1))!= EOF)
                     printf("%c",ch);
                 printf("\n\n\n");
@@ -98,11 +98,19 @@ void admin()
             }
             else if(choice==2)
             {
-                d2=fopen("Details2.txt","r+");
+                d2=fopen("tt2.txt","r+");
                 while((ch=fgetc(d2))!=EOF)
                 printf("%c",ch);
                 printf("\n\n\n");
                 fclose(d2);
+            }
+            else if(choice==3)
+            {
+                d3=fopen("tt3.txt","r+");
+                while((ch=fgetc(d3))!=EOF)
+                printf("%c",ch);
+                printf("\n\n\n");
+                fclose(d3);
             }
             else
             {
@@ -185,10 +193,10 @@ void book(FILE *poi,FILE *seat)
         printf("\nCon nhieu ghe khong co san\n");
         goto L3;
     }
-    printf("\nVui long chon ghe cac ghe con lai ");
+    printf("\nVui long chon ghe ");
     for(int i=0;i<no;i++)
     {
-        L7:printf("\nTiep tuc:");
+        L7:printf("\nGhe so:");
         scanf("%d",&tick[i]);
         if(tick[i]>80)
         {
@@ -223,20 +231,21 @@ void book(FILE *poi,FILE *seat)
     for(int i=0;i<no;i++)
     {
         if(tick[i]>0 && tick[i]<=20)
-            sum=sum+50;
+            sum=sum+50000;
         else if(tick[i]>=21 && tick[i]<=60)
-            sum=sum+110;
+            sum=sum+80000;
         else
-            sum=sum+140;
+            sum=sum+100000;
     }
-    printf("\nKhong. so ghe da dat: %d",no);
+    printf("\nChuc mung ban da dat ghe thanh cong:");
+    printf("\nSo ghe da dat: %d",no);
     printf("\nCho ngoi da dat:");
     for(int r=0;r<no;r++)
     printf("%d, ",tick[r]);
-    printf("\nGia ve: Rs.%.2f/-",sum);
+    printf("\nGia ve: %.2fVND/-",sum);
     tax=(sum*5)/100;
-    printf("\nThue: Rs.%.2f/-",tax);
-    printf("\nTong thanh toan: Rs.%.2f/-",sum+tax);
+    printf("\nThue: %.2fVND/-",tax);
+    printf("\nTong thanh toan: %.2fVND/-",sum+tax);
     printf("\nCHUC BAN CO MOT NGAY TOT LANH!!!\n\n\n");
 
     fclose(poi);
@@ -244,7 +253,7 @@ void book(FILE *poi,FILE *seat)
 }
 int main()
 {
-    FILE *Md,*d1,*d2,*s1,*s2;
+    FILE *Md,*d1,*d2,*d3,*s1,*s2,*s3;
     int choice;
     int ch=0;
     char det[25];
@@ -262,27 +271,34 @@ int main()
     {
         Md=fopen("Movie_details.txt","a+");
         int i=0;
-        while(i<2)
+        while(i<5)
         {
-            fgets(det,25,Md);
+            fgets(det,100,Md);
             printf("%s",det);
             i++;
         }
-        L2:printf("NHAP PHIM BAN CHON\n");
+        L2:printf("\nNHAP PHIM BAN CHON\n");
         scanf("%d",&ch);
         if(ch==1)
         {
-                d1=fopen("Details1.txt","a+");
-                s1=fopen("Seats1.txt","a+");
+                d1=fopen("tt1.txt","a+");
+                s1=fopen("ghe1.txt","a+");
                 book(d1,s1);
                 goto l1;
         }
         else if(ch==2)
         {
-            d2=fopen("Details2.txt","a+");
-            s2=fopen("Seats2.txt","a+");
-            book(d2,s2);
-            goto l1;
+                d2=fopen("tt2.txt","a+");
+                s2=fopen("ghe2.txt","a+");
+                book(d2,s2);
+                goto l1;
+        }
+        else if(ch==3)
+        {
+                d3=fopen("tt3.txt","a+");
+                s3=fopen("ghe3.txt","a+");
+                book(d3,s3);
+                goto l1;
         }
         else
         {
