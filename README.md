@@ -1,4 +1,4 @@
-# KTLT-Group-25
+# KTLT Group 15 (Cinema Management)
 This is a big project in KTLT of group 15
 
 
